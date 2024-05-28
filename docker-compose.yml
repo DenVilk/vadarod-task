@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  database:
+    image: postgres
+    env_file:
+      - .env
+    environment:
+      - PGDATA="/data/postgres"
+    volumes:
+      - db-data:/data/postgres
+
+  backend:
+    build: ./
+    ports:
+      - "8000:8000"
+    restart: on-failure
+    env_file:
+      - .env
+    depends_on:
+      - database
+
+volumes:
+  db-data:
